@@ -1,13 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const passport = require('passport')
+const passport = require('passport');
 const bodyParser = require('body-parser');
 
-const routes = require('./routes/api');
+const routes = require('./routes');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
@@ -18,9 +18,9 @@ const db = require('./config/keys').mongoURI;
 
 // Connect to MongoDB
 mongoose
-  .connect(db)
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
+.connect(db)
+.then(() => console.log('MongoDB Connected'))
+.catch(err => console.log(err));
 
 app.get('/', (req, res) => res.send('Hello World'));
 
@@ -29,7 +29,7 @@ app.use('/api/users', routes.users);
 app.use('/api/profile', routes.profile);
 
 // app.use('/api/profile', routes.profile);
-// app.use('/api/posts', routes.posts);
+
 
 const port = process.env.PORT || 5000;
 
