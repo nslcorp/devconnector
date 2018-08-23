@@ -2,7 +2,22 @@ const ProfileModel = require('../models').ProfileModel;
 const validateProfileInput = require('../validation/profile');
 
 
-module.exports.getProfile = (req, res, next) => {
+module.exports.getAllProfiles = (req, res) => {
+  const errors = {};
+  errors.noprofiles = 'There is no profiles at all';
+
+  ProfileModel.find()
+  .populate('user', ['name', 'avatar'])
+  .then(profiles => {
+    if (!profiles) {
+      return res.status(404).json(errors);
+    }
+    res.json(profiles);
+  })
+  .catch(() => res.status(404).json(errors));
+};
+
+module.exports.getProfile = (req, res) => {
   const errors = {};
 
   ProfileModel.findOne({ user: req.user.id })
@@ -18,7 +33,38 @@ module.exports.getProfile = (req, res, next) => {
 };
 
 
-module.exports.createProfile = (req, res) => {
+module.exports.getProfileByHandle = (req, res) => {
+  const errors = {};
+
+  ProfileModel.findOne({ handle: req.params.handle })
+  .populate('user', ['name', 'avatar'])
+  .then(profile => {
+    if (!profile) {
+      errors.noprofile = 'There is no profile for this user';
+      return res.status(404).json(errors);
+    }
+    res.json(profile);
+  })
+  .catch(err => res.status(404).json(err));
+};
+
+module.exports.getProfileByUserId = (req, res) => {
+  const errors = {};
+
+  ProfileModel.findOne({ user: req.params.user_id })
+  .populate('user', ['name', 'avatar'])
+  .then(profile => {
+    if (!profile) {
+      errors.noprofile = 'There is no profile for this user';
+      return res.status(404).json(errors);
+    }
+    res.json(profile);
+  })
+  .catch(() => res.status(404).json({ noprofile: 'There is no profile for this user' }));
+};
+
+
+module.exports.createProfile = (req, res, next) => {
   const { errors, isValid } = validateProfileInput(req.body);
 
   // Check Validation
