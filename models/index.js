@@ -1,2 +1,2 @@
-module.exports.Profile = require('./profile');
 module.exports.UserModel = require('./user');
+module.exports.ProfileModel = require('./profile');
