@@ -55,7 +55,7 @@ module.exports.loginUser = (req, res, next) => {
     .then(isMatch => {
         if (isMatch) {
           const payload = { id: user._id, };
-          const token = jwt.sign(payload, config.secretOrKey, { expiresIn: '3h' });
+          const token = jwt.sign(payload, config.secretOrKey, { expiresIn: '99h' });
 
           return res.json({ success: true, token, payload });
         }

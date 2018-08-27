@@ -1,5 +1,8 @@
 const ProfileModel = require('../models').ProfileModel;
+const UserModel = require('../models').UserModel;
 const validateProfileInput = require('../validation/profile');
+const validateExperienceInput = require('../validation/experience');
+const validateEducationInput = require('../validation/education');
 
 
 module.exports.getAllProfiles = (req, res) => {
@@ -62,6 +65,125 @@ module.exports.getProfileByUserId = (req, res) => {
   })
   .catch(() => res.status(404).json({ noprofile: 'There is no profile for this user' }));
 };
+
+module.exports.addExperience = (req, res) => {
+
+  const { errors, isValid } = validateExperienceInput(req.body);
+
+  if (!isValid) {
+    // Return any errors with 400 status
+    return res.status(400).json(errors);
+  }
+
+  ProfileModel.findOne({ user: req.user.id }).then(profile => {
+    const newExp = {
+      title: req.body.title,
+      company: req.body.company,
+      location: req.body.location,
+      from: req.body.from,
+      to: req.body.to,
+      current: req.body.current,
+      description: req.body.description
+    };
+
+    // Add to exp array
+    profile.experience.unshift(newExp);
+
+    profile.save()
+    .then(profile => res.json(profile))
+    .catch(err => console.log(err));
+  })
+  .catch(err => console.log(err));
+};
+
+module.exports.addEducation = (req, res) => {
+
+  const { errors, isValid } = validateEducationInput(req.body);
+
+  if (!isValid) {
+    // Return any errors with 400 status
+    return res.status(400).json(errors);
+  }
+
+  ProfileModel.findOne({ user: req.user.id }).then(profile => {
+    const newEducation = {
+      school: req.body.school,
+      degree: req.body.degree,
+      fieldofstudy: req.body.fieldofstudy,
+      from: req.body.from,
+      to: req.body.to,
+      current: req.body.current,
+      description: req.body.description
+    };
+
+    // Add to exp array
+    profile.education.unshift(newEducation);
+
+    profile.save()
+    .then(profile => res.json(profile))
+    .catch(err => console.log(err));
+  })
+  .catch(err => console.log(err));
+};
+
+module.exports.deleteEducation = (req, res) => {
+
+  ProfileModel.findOne({ user: req.user.id }).then(profile => {
+
+    const removeIndex = profile.education
+    .map(edu => edu.id)
+    .findIndex(id => id === req.params.education_id);
+
+    if (removeIndex !== -1) {
+      profile.education.splice(removeIndex);
+
+      profile.save()
+      .then(profile => res.json(profile))
+      .catch(err => console.log(err));
+    }
+    else {
+      res.status(404).json({ education: 'No education with such id' });
+    }
+
+    // Add to exp array
+
+  })
+  .catch(err => console.log(err));
+};
+
+module.exports.deleteExperience = (req, res) => {
+
+  ProfileModel.findOne({ user: req.user.id }).then(profile => {
+
+    const removeIndex = profile.experience
+    .map(experience => experience.id)
+    .findIndex(id => id === req.params.experience_id);
+
+    if (removeIndex !== -1) {
+      profile.experience.splice(removeIndex);
+
+      profile.save()
+      .then(profile => res.json(profile))
+      .catch(err => console.log(err));
+    }
+    else {
+      res.status(404).json({ education: 'No experience with such id' });
+    }
+
+    // Add to exp array
+
+  })
+  .catch(err => console.log(err));
+};
+
+
+module.exports.deleteProfile = (req, res) => {
+  ProfileModel.findOneAndRemove({ user: req.user.id }).then(() => {
+    UserModel.findOneAndRemove({ _id: req.user.id }).then(() =>
+      res.json({ success: true })
+    );
+  });
+}
 
 
 module.exports.createProfile = (req, res, next) => {
