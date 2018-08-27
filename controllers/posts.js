@@ -37,6 +37,55 @@ module.exports.createPost = (req, res) => {
 };
 
 
+module.exports.createComment = (req, res) => {
+  const { errors, isValid } = validatePostInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  PostModel.findById(req.params.id)
+  .then(post => {
+    const newComment = {
+      text: req.body.text,
+      name: req.body.name,
+      avatar: req.body.avatar,
+      user: req.user.id
+    };
+
+    post.comments.unshift(newComment);
+    post.save().then(post => res.json(post));
+  })
+  .catch(err => res.status(404).json(err));
+};
+
+module.exports.deleteComment = (req, res) => {
+  PostModel.findById(req.params.id)
+  .then(post => {
+    // Check to see if comment exists
+    if (
+      post.comments.filter(
+        comment => comment._id.toString() === req.params.id
+      ).length === 0
+    ) {
+      return res
+      .status(404)
+      .json({ commentnotexists: 'Comment does not exist' });
+    }
+
+    // Get remove index
+    const removeIndex = post.comments
+    .map(item => item._id.toString())
+    .indexOf(req.params.id);
+
+    // Splice comment out of array
+    post.comments.splice(removeIndex, 1);
+
+    post.save().then(post => res.json(post));
+  })
+  .catch(err => res.status(404).json(err));
+};
+
 module.exports.likePost = (req, res) => {
   ProfileModel.findOne({ user: req.user.id }).then(() => {
     PostModel.findById(req.params.id)
@@ -84,7 +133,6 @@ module.exports.unlikePost = (req, res) => {
     .catch(err => res.status(404).json(err));
   });
 };
-
 
 
 module.exports.deletePost = (req, res) => {

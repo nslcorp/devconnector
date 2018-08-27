@@ -9,10 +9,14 @@ router.get('/', postsController.getAllPosts);
 router.get('/:id', postsController.getPostById);
 
 router.post('/', passport.authenticate('jwt', { session: false }), postsController.createPost);
+router.delete('/:id', passport.authenticate('jwt', { session: false }), postsController.deletePost);
+
 router.post('/like/:id', passport.authenticate('jwt', { session: false }), postsController.likePost);
 router.post('/unlike/:id', passport.authenticate('jwt', { session: false }), postsController.unlikePost);
 
-router.delete('/:id', passport.authenticate('jwt', { session: false }), postsController.deletePost);
+router.post('/comment/:id', passport.authenticate('jwt', { session: false }), postsController.createComment);
+router.delete('/comment/:id', passport.authenticate('jwt', { session: false }), postsController.deleteComment);
+
 
 
 module.exports = router;
