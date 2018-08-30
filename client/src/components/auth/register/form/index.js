@@ -1,15 +1,12 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-const renderField = ({ input, className, placeholder, type, meta: { touched, error } }) => {
-  console.log(input);
-  return (
-    <div className="form-group">
-      <input className={className} {...input} placeholder={placeholder} type={type} />
-      {touched && error && <span>{error}</span>}
-    </div>
-  );
-};
+const renderField = ({ input, className, placeholder, type, meta: { touched, error } }) => (
+  <div className="form-group">
+    <input className={className} {...input} placeholder={placeholder} type={type} />
+    {touched && error && <span>{error}</span>}
+  </div>
+);
 
 const RegisterForm = (props) => {
   const { error, handleSubmit, pristine, reset, submitting } = props;
