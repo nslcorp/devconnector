@@ -14,7 +14,7 @@ module.exports.registerUser = (req, res, next) => {
   UserModel.findOne({ email: req.body.email })
   .then(user => {
 
-    if (user) return res.status(400).send({ email: `${req.body.email} is already exist` });
+    if (user) return res.status(400).json({ email: `${req.body.email} is already exist` });
 
     const avatar = gravatar.url(req.body.email, { s: '200', r: 'pg', d: 'mm' });
     const newUser = new UserModel({
@@ -36,7 +36,7 @@ module.exports.registerUser = (req, res, next) => {
     });
 
   })
-  .catch(err => next(err));
+  .catch(err => res.status(400).json(err));
 };
 
 
