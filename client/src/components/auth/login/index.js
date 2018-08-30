@@ -1,9 +1,8 @@
-import React, { Fragment } from 'react';
+import {connect} from 'react-redux'
 
-const Login = (props) => (
-  <Fragment>Login</Fragment>
-);
+import { loginUser } from '../duck';
+import Component from './component';
 
-Login.propTypes = {};
+const withConnect = connect(null, {loginUser});
 
-export default Login;
+export default withConnect(Component) ;

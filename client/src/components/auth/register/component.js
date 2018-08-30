@@ -1,7 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import RegisterForm from './form';
+import {connect} from 'react-redux'
+import {compose} from 'redux'
+import {withRouter} from 'react-router-dom'
+import { registerUser } from '../duck';
 
-const onSubminLog = fields => console.log('here...', fields);
 
 const Register = (props) => (
   <div className="register">
@@ -10,13 +14,21 @@ const Register = (props) => (
         <div className="col-md-8 m-auto">
           <h1 className="display-4 text-center">Sign Up</h1>
           <p className="lead text-center">Create your DevConnector account</p>
-          <RegisterForm onSubmit={onSubminLog} />
+          <RegisterForm errors={props.errors} onSubmit={(data) => props.registerUser(data, props.history)} />
         </div>
       </div>
     </div>
   </div>
 );
 
-Register.propTypes = {};
+Register.propTypes = {
+  history: PropTypes.object.isRequired,
+  registerUser: PropTypes.func.isRequired
+};
 
-export default Register;
+const withConnect = connect(null, {registerUser});
+
+export default compose(
+  withConnect,
+  withRouter
+)(Register) ;

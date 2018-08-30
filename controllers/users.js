@@ -14,7 +14,7 @@ module.exports.registerUser = (req, res, next) => {
   UserModel.findOne({ email: req.body.email })
   .then(user => {
 
-    if (user) return res.status(400).send({ email: `${req.body.email} is already exist` });
+    if (user) return res.status(400).json({ email: `${req.body.email} is already exist` });
 
     const avatar = gravatar.url(req.body.email, { s: '200', r: 'pg', d: 'mm' });
     const newUser = new UserModel({
@@ -36,19 +36,19 @@ module.exports.registerUser = (req, res, next) => {
     });
 
   })
-  .catch(err => next(err));
+  .catch(err => res.status(400).json(err));
 };
 
 
 module.exports.loginUser = (req, res, next) => {
   const { errors, isValid } = validateLoginForm(req.body);
-  if (!isValid) return res.status(400).json({ errors });
+  if (!isValid) return res.status(400).json(errors);
 
   UserModel.findOne({ email: req.body.email })
   .then(user => {
     if (!user) {
       errors.email = 'Email was not found';
-      return res.status(404).json({ errors });
+      return res.status(404).json(errors);
     }
 
     bcrypt.compare(req.body.password, user.password)
@@ -60,7 +60,7 @@ module.exports.loginUser = (req, res, next) => {
           return res.json({ success: true, token, payload });
         }
         errors.password = 'Password is incorrect';
-        return res.status(404).json({ errors });
+        return res.status(404).json(errors);
       }
     );
   })

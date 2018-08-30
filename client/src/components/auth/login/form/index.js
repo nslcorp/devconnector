@@ -13,15 +13,6 @@ const RegisterForm = (props) => {
   const fieldClassName = "form-control form-control-lg";
   return (
     <form onSubmit={handleSubmit}>
-
-      <Field
-        className={fieldClassName}
-        name="name"
-        type="text"
-        placeholder="Name"
-        component={renderField}
-        required
-      />
       <Field
         className={fieldClassName}
         name="email"
@@ -31,18 +22,12 @@ const RegisterForm = (props) => {
         required
       />
       <Field
-        className="form-control form-control-lg"
+        className={fieldClassName}
         name="password"
         type="password"
-        component={renderField}
         placeholder="Password"
-      />
-      <Field
-        className="form-control form-control-lg"
-        name="password2"
-        type="password"
         component={renderField}
-        placeholder="Confirm Password"
+        required
       />
       {error && <strong>{error}</strong>}
       <button className="btn btn-info btn-block mt-4" type="submit" disabled={submitting}>
@@ -53,6 +38,6 @@ const RegisterForm = (props) => {
 };
 
 export default reduxForm({
-  form: 'register'
+  form: 'login'
 })(RegisterForm);
 
