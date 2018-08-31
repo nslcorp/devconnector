@@ -90,7 +90,7 @@ export const signUpSaga = function* (action) {
 export const loginSaga = function* (action) {
 
   try {
-    const { token } = yield call(api.get, '/api/users/login', action.payload);
+    const { token } = yield call(api.post, '/api/users/login', action.payload);
 
     localStorage.setItem('jwtToken', token);
 

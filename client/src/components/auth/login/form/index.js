@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 const renderField = ({ input, className, placeholder, type, meta: { touched, error } }) => (
   <div className="form-group">
     <input className={className} {...input} placeholder={placeholder} type={type} />
-    {touched && error && <span>{error}</span>}
+    {touched && error && <div className={error ? "is-invalid" : ""}>{error}</div>}
   </div>
 );
 
