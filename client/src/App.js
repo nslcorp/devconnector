@@ -9,7 +9,17 @@ import Landing from './components/layout/Landing';
 import Register from './components/auth/register';
 import Login from './components/auth/login';
 import store from './redux/store';
+import jwt_decode from 'jwt-decode';
+import { setAuthToken } from './utils';
+import { setUser } from './components/auth/duck';
 
+
+const token = localStorage.jwtToken;
+if(token){
+  setAuthToken(token)
+  const decoded = jwt_decode(token);
+  store.dispatch(setUser(decoded))
+}
 
 class App extends Component {
   render() {

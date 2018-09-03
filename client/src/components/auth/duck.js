@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest, take } from 'redux-saga/effects';
 import { stopSubmit } from 'redux-form';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
@@ -56,6 +56,10 @@ export const loginUser = (data) => ({
   type: LOGIN_USER_REQUEST,
   payload: data
 });
+export const setUser = (decoded) => ({
+  type: LOGIN_USER_SUCCESS,
+  payload: decoded
+});
 
 
 const api = {
@@ -102,7 +106,8 @@ export const loginSaga = function* (action) {
       yield put({ type: LOGIN_USER_ERROR });
     }
     else {
-      yield put({ type: LOGIN_USER_SUCCESS, payload: decoded });
+      console.log(decoded)
+      yield put(setUser(decoded));
     }
   }
 
