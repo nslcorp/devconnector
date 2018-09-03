@@ -9,7 +9,7 @@ const Login = (props) => (
         <div className="col-md-8 m-auto">
           <h1 className="display-4 text-center">Log In</h1>
           <p className="lead text-center">Sign in to your DevConnector account</p>
-          <Form onSubmit={props.loginUser} />
+          <Form onSubmit={(data) =>props.loginUser(data, props.history)} />
         </div>
       </div>
     </div>
@@ -17,7 +17,8 @@ const Login = (props) => (
 );
 
 Login.propTypes = {
-  loginUser: PropTypes.func.isRequired
+  loginUser: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 export default Login;

@@ -9,7 +9,7 @@ const renderField = ({ input, className, placeholder, type, meta: { touched, err
 );
 
 const RegisterForm = (props) => {
-  const { error, handleSubmit, pristine, reset, submitting } = props;
+  const { error, handleSubmit, submitting } = props;
   const fieldClassName = "form-control form-control-lg";
   return (
     <form onSubmit={handleSubmit}>
