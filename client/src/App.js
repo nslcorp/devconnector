@@ -16,9 +16,15 @@ import { setAuthToken } from './components/auth/utils';
 
 const token = localStorage.jwtToken;
 if (token) {
+  window.location.href = '/aabbcc'
   setAuthToken(token);
   const decoded = jwt_decode(token);
   store.dispatch(setUser(decoded));
+
+  const currTime = Date.now() / 1000;
+  if (decoded.exp < currTime) {
+    console.log('Token expited....')
+  }
 }
 
 class App extends Component {

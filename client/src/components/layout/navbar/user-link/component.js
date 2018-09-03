@@ -4,16 +4,9 @@ import PropTypes from 'prop-types';
 const UserLink = ({logoutUser, user}) => (
   <ul className="navbar-nav ml-auto">
     <li className="nav-item">
-      <a href="" onClick={logoutUser} className="nav-link"
-      >
-        <img
-          className="rounded-circle"
-          src={user.avatar}
-          alt={user.name}
-          style={{ width: '25px', marginRight: '5px' }}
-          title="You must have a Gravatar connected to your email to display an image"
-        />{' '}
-        Logout
+      <a href="" onClick={logoutUser} className="nav-link">
+        <img className="rounded-circle" src={user.avatar} alt={user.name} style={{ width: '25px', marginRight: '5px' }} />
+        {' '}Logout
       </a>
     </li>
   </ul>
