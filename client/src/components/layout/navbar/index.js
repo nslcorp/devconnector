@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { logoutUser } from '../../auth/duck';
+import { getIsAuthenticated, logoutUser } from '../../auth/duck';
 import Component from './component';
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
+  isAuthenticated: getIsAuthenticated(state),
 });
 
 const withConnect = connect(mapStateToProps, { logoutUser });

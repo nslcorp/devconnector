@@ -39,7 +39,9 @@ export default (state = initialState, action) => {
       };
 
     case LOGIN_USER_SUCCESS:
+      window.state = state;
       return {
+        ...state,
         isAuthenticated: true,
         user: payload
       };
@@ -58,6 +60,9 @@ export default (state = initialState, action) => {
   }
 }
 
+export const getAuth = state => state.auth;
+export const getIsAuthenticated = state => getAuth(state).isAuthenticated;
+
 
 export const registerUser = (data, history) => ({
   type: REGISTER_USER_REQUEST,
@@ -65,7 +70,7 @@ export const registerUser = (data, history) => ({
 });
 export const loginUser = (data, history) => ({
   type: LOGIN_USER_REQUEST,
-  payload: {data, history}
+  payload: { data, history }
 });
 export const setUser = (decoded) => ({
   type: LOGIN_USER_SUCCESS,
