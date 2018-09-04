@@ -22,7 +22,6 @@ module.exports.getAllProfiles = (req, res) => {
 
 module.exports.getProfile = (req, res) => {
   const errors = {};
-
   ProfileModel.findOne({ user: req.user.id })
   .populate('user', ['name', 'avatar'])
   .then(profile => {

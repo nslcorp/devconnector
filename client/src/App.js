@@ -8,6 +8,7 @@ import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
 import Register from './components/auth/register';
 import Login from './components/auth/login';
+import Dashboard from './components/dashboard';
 import store from './redux/store';
 import jwt_decode from 'jwt-decode';
 import { setUser } from './components/auth/duck';
@@ -16,7 +17,6 @@ import { setAuthToken } from './components/auth/utils';
 
 const token = localStorage.jwtToken;
 if (token) {
-  window.location.href = '/aabbcc'
   setAuthToken(token);
   const decoded = jwt_decode(token);
   store.dispatch(setUser(decoded));
@@ -38,6 +38,7 @@ class App extends Component {
             <div className="container">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/dashboard" component={Dashboard} />
             </div>
             <Footer />
           </div>

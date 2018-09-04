@@ -1,11 +1,11 @@
 import axios from 'axios/index';
 
 export const setAuthToken = token => {
-  localStorage.setItem('authToken', token);
+  localStorage.setItem('jwtToken', token);
   axios.defaults.headers.common['Authorization'] = token;
 };
 
 export const removeAuthToken = () => {
-  localStorage.removeItem('authToken');
+  localStorage.removeItem('jwtToken');
   delete axios.defaults.headers.common['Authorization'];
 };
