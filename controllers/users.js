@@ -54,8 +54,8 @@ module.exports.loginUser = (req, res, next) => {
     bcrypt.compare(req.body.password, user.password)
     .then(isMatch => {
         if (isMatch) {
-          const payload = { id: user._id, };
-          const token = jwt.sign(payload, config.secretOrKey, { expiresIn: '99h' });
+          const payload = { id: user._id, name: user.name, avatar: user.avatar };
+          const token = 'Bearer ' + jwt.sign(payload, config.secretOrKey, { expiresIn: '99h' }) ;
 
           return res.json({ success: true, token, payload });
         }

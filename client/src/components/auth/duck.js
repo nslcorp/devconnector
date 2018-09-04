@@ -1,9 +1,10 @@
-import { all, call, put, takeLatest, take } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { stopSubmit } from 'redux-form';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-import { isEmpty, setAuthToken } from '../../utils';
+import { isEmpty } from '../../utils';
+import * as utils from './utils';
 
 export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
 export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
@@ -13,10 +14,18 @@ export const LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST';
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
 export const LOGIN_USER_ERROR = 'LOGIN_USER_ERROR';
 
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const LOGOUT_ERROR = 'LOGOUT_ERROR';
+
 
 const initialState = {
   isAuthenticated: false,
-  user: {}
+  user: {
+    id: '',
+    name: '',
+    avatar: ''
+  }
 };
 
 export default (state = initialState, action) => {
@@ -25,20 +34,22 @@ export default (state = initialState, action) => {
   switch (type) {
     case REGISTER_USER_REQUEST:
       return {
-        ...state,
         isAuthenticated: true,
         user: payload
       };
 
     case LOGIN_USER_SUCCESS:
       return {
-        ...state,
         isAuthenticated: true,
         user: payload
       };
     case LOGIN_USER_ERROR:
       return {
-        ...state,
+        isAuthenticated: false,
+      };
+    case LOGOUT_SUCCESS:
+      return {
+        user: payload,
         isAuthenticated: false,
       };
 
@@ -52,13 +63,16 @@ export const registerUser = (data, history) => ({
   type: REGISTER_USER_REQUEST,
   payload: { data, history }
 });
-export const loginUser = (data) => ({
+export const loginUser = (data, history) => ({
   type: LOGIN_USER_REQUEST,
-  payload: data
+  payload: {data, history}
 });
 export const setUser = (decoded) => ({
   type: LOGIN_USER_SUCCESS,
   payload: decoded
+});
+export const logoutUser = () => ({
+  type: LOGOUT_REQUEST
 });
 
 
@@ -94,11 +108,9 @@ export const signUpSaga = function* (action) {
 export const loginSaga = function* (action) {
 
   try {
-    const { token } = yield call(api.post, '/api/users/login', action.payload);
+    const { token } = yield call(api.post, '/api/users/login', action.payload.data);
 
-    localStorage.setItem('jwtToken', token);
-
-    yield call(setAuthToken, token);
+    yield call(utils.setAuthToken, token);
 
     const decoded = yield call(jwt_decode, token);
 
@@ -106,8 +118,8 @@ export const loginSaga = function* (action) {
       yield put({ type: LOGIN_USER_ERROR });
     }
     else {
-      console.log(decoded)
       yield put(setUser(decoded));
+      yield call(action.payload.history.push, '/dashboard');
     }
   }
 
@@ -116,9 +128,22 @@ export const loginSaga = function* (action) {
   }
 };
 
+export const logoutSaga = function* () {
+  try {
+    yield call(utils.removeAuthToken, false);
+    yield put({ type: LOGIN_USER_SUCCESS, payload: {} });
+  }
+  catch (error) {
+    yield put({ type: LOGOUT_ERROR, payload: {} });
+  }
+
+};
+
 export const saga = function* () {
   yield all([
     takeLatest(REGISTER_USER_REQUEST, signUpSaga),
     takeLatest(LOGIN_USER_REQUEST, loginSaga),
+    takeLatest(LOGOUT_REQUEST, logoutSaga),
   ]);
 };
+

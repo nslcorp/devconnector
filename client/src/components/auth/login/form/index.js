@@ -1,15 +1,10 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import InputFiledGroup from '../../../../shared/input-field-group';
 
-const renderField = ({ input, className, placeholder, type, meta: { touched, error } }) => (
-  <div className="form-group">
-    <input className={className} {...input} placeholder={placeholder} type={type} />
-    {touched && error && <div className={error ? "is-invalid" : ""}>{error}</div>}
-  </div>
-);
 
 const RegisterForm = (props) => {
-  const { error, handleSubmit, pristine, reset, submitting } = props;
+  const { error, handleSubmit, submitting } = props;
   const fieldClassName = "form-control form-control-lg";
   return (
     <form onSubmit={handleSubmit}>
@@ -18,7 +13,7 @@ const RegisterForm = (props) => {
         name="email"
         type="email"
         placeholder="Email Address"
-        component={renderField}
+        component={InputFiledGroup}
         required
       />
       <Field
@@ -26,7 +21,7 @@ const RegisterForm = (props) => {
         name="password"
         type="password"
         placeholder="Password"
-        component={renderField}
+        component={InputFiledGroup}
         required
       />
       {error && <strong>{error}</strong>}
