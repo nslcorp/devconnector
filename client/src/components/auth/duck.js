@@ -119,7 +119,7 @@ export const loginSaga = function* (action) {
     }
     else {
       yield put(setUser(decoded));
-      yield call(action.payload.history.push, '/');
+      yield call(action.payload.history.push, '/dashboard');
     }
   }
 
