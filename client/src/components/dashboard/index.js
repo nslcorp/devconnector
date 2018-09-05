@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import { doGetProfile } from './actions';
 import { getIsLoading, getProfile } from './reducer';
 import { isEmpty } from '../../utils';
-import Spinner from '../../shared/spinner';
-import EmptyProfile from './empty-profile';
 import { getAuth } from '../auth/duck';
+import EmptyProfile from './empty-profile';
+import ProfileActions from './profile-actions';
+import Spinner from '../../shared/spinner';
+
 
 class Dashboard extends Component {
 
@@ -14,15 +16,22 @@ class Dashboard extends Component {
     this.props.doGetProfile();
   }
 
+
+
+
   render() {
 
     const isEmptyProfile = isEmpty(this.props.profile);
-    //if (isEmptyProfile || this.props.loading) return <Spinner />;
+    if (this.props.loading) return <Spinner />;
 
     if (isEmptyProfile) return <EmptyProfile name={this.props.userName} />;
 
     return (
-      <div>Dashboard</div>
+      <div>
+        <h3>Dashboard here...</h3>
+        <ProfileActions />
+
+      </div>
     );
   }
 }

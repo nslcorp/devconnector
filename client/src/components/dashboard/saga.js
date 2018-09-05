@@ -19,11 +19,9 @@ const createProfileSaga = function* (action) {
 
   try {
     const profile = yield api.post('/api/profile', action.payload.data);
-    console.log(profile);
     yield put({ type: types.CREATE_PROFILE_SUCCESS, payload: profile });
   }
   catch (error) {
-    console.log(error)
     yield put(stopSubmit('create-profile', error));
     yield put({ type: types.CREATE_PROFILE_ERROR, payload: error });
   }
