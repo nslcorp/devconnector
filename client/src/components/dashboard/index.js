@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getProfile } from './actions';
+import { doGetProfile } from './actions';
+import { getIsLoading, getProfile } from './reducer';
+import { isEmpty } from '../../utils';
 import Spinner from '../../shared/spinner';
-import { getIsProfileLoading } from './reducer';
+import EmptyProfile from './empty-profile';
+import { getAuth } from '../auth/duck';
 
 class Dashboard extends Component {
 
   componentDidMount() {
-    this.props.getProfile();
+    this.props.doGetProfile();
   }
 
   render() {
-    if (this.props.loading) return <Spinner />;
+
+    const isEmptyProfile = isEmpty(this.props.profile);
+    //if (isEmptyProfile || this.props.loading) return <Spinner />;
+
+    if (isEmptyProfile) return <EmptyProfile name={this.props.userName} />;
 
     return (
       <div>Dashboard</div>
@@ -21,9 +28,11 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-  loading: getIsProfileLoading(state)
+  userName: getAuth(state).user.name,
+  loading: getIsLoading(state),
+  profile: getProfile(state)
 });
-const withConnect = connect(mapStateToProps, { getProfile });
+const withConnect = connect(mapStateToProps, { doGetProfile });
 
 export default withConnect(Dashboard);
 

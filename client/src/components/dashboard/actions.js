@@ -1,5 +1,5 @@
 import { GET_PROFILE_REQUEST } from './types';
 
-export const getProfile = () => ({
+export const doGetProfile = () => ({
   type: GET_PROFILE_REQUEST
 });

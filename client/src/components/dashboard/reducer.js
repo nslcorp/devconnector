@@ -29,5 +29,5 @@ export default (state = initialState, action) => {
 }
 
 export const getDashboard = state => state.dashboard;
-// export const getProfile = state => getDashboard(state).profile;
-export const getIsProfileLoading = state => getDashboard(state).isLoading;
+export const getProfile = state => getDashboard(state).profile;
+export const getIsLoading = state => getDashboard(state).isLoading;

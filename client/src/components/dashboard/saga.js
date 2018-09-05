@@ -6,10 +6,11 @@ const getProfileSaga = function* () {
 
   try {
     const profile = yield api.get('/api/profile');
+    console.log(profile)
     yield put({ type: types.GET_PROFILE_SUCCESS, payload: profile });
   }
   catch (error) {
-    throw error;
+    yield put({ type: types.GET_PROFILE_ERROR, payload: error.response });
   }
 
 };
