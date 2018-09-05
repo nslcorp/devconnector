@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-const InputFieldGroup = ({ input, placeholder, type, meta: { touched, error } }) => {
-  const rootClassName = "form-control form-control-lg";
+const InputFieldGroup = ({ input, info, placeholder, type, meta: { touched, error } }) => {
+  const rootClassList = classNames('form-control form-control-lg', {
+    'is-invalid': error
+  });
   return (
     <div className="form-group">
-      <input className={rootClassName} {...input} placeholder={placeholder} type={type} />
-      {touched && error && <div className={error ? "is-invalid" : ""}>{error}</div>}
+      <input className={rootClassList} {...input} placeholder={placeholder} type={type} />
+      {info && <small className="form-text text-muted">{info}</small>}
+      {error && <div className="invalid-feedback">{error}</div>}
     </div>
   );
 };
@@ -15,7 +19,8 @@ InputFieldGroup.propTypes = {
   input: PropTypes.shape().isRequired,
   meta: PropTypes.shape().isRequired,
   placeholder: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired
+  info: PropTypes.string,
+  type: PropTypes.string
 };
 
 InputFieldGroup.defaultProps = {

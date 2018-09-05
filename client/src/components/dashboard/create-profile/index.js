@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import {compose} from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Form from './form';
+import { doCreateProfile } from '../actions';
 
 class CreateProfile extends Component {
   render() {
@@ -15,8 +19,8 @@ class CreateProfile extends Component {
               </p>
               <small className="d-block pb-3">* = required fields</small>
 
-              <Form onSubmit={data => console.log(data)} />
-
+              <Form onSubmit={data => this.props.doCreateProfile(data, this.props.history)} />
+              {/*{*/}
             </div>
           </div>
         </div>
@@ -25,6 +29,13 @@ class CreateProfile extends Component {
   }
 }
 
-CreateProfile.propTypes = {};
+CreateProfile.propTypes = {
+  doCreateProfile: PropTypes.func.isRequired,
+  history: PropTypes.shape().isRequired
+};
 
-export default CreateProfile;
+const withConnect = connect(null, { doCreateProfile });
+export default compose(
+  withConnect,
+  withRouter
+)(CreateProfile);
