@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import './App.css';
+import PrivateRoute from './shared/privat-route'
 import Navbar from './components/layout/navbar';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
@@ -34,7 +35,8 @@ class App extends Component {
         <BrowserRouter>
           <div className="App">
             <Navbar />
-            <Route exact path="/" component={Landing} />
+            <PrivateRoute exact path="/" component={Landing}/>
+            {/*<Route exact path="/" component={Landing} />*/}
             <div className="container">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />

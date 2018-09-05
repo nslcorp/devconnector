@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const InputFiledGroup = ({ input, className, placeholder, type, meta: { touched, error } }) => (
+const InputFieldGroup = ({ input, className, placeholder, type, meta: { touched, error } }) => (
   <div className="form-group">
     <input className={className} {...input} placeholder={placeholder} type={type} />
     {touched && error && <div className={error ? "is-invalid" : ""}>{error}</div>}
   </div>
 );
 
-InputFiledGroup.propTypes = {
+InputFieldGroup.propTypes = {
   input: PropTypes.shape().isRequired,
   meta: PropTypes.shape().isRequired,
   className: PropTypes.string.isRequired,
@@ -16,4 +16,4 @@ InputFiledGroup.propTypes = {
   type: PropTypes.string.isRequired
 };
 
-export default InputFiledGroup;
+export default InputFieldGroup;

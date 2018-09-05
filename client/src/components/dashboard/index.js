@@ -2,22 +2,28 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { getProfile } from './actions';
+import Spinner from '../../shared/spinner';
+import { getIsProfileLoading } from './reducer';
 
 class Dashboard extends Component {
 
-  componentWillMount(){
-    this.props.getProfile()
+  componentDidMount() {
+    this.props.getProfile();
   }
 
-    render(){
-        return (
-            <div>Dashboard</div>
-        )
-    }
+  render() {
+    if (this.props.loading) return <Spinner />;
+
+    return (
+      <div>Dashboard</div>
+    );
+  }
 }
 
-
-const withConnect = connect(null, {getProfile});
+const mapStateToProps = state => ({
+  loading: getIsProfileLoading(state)
+});
+const withConnect = connect(mapStateToProps, { getProfile });
 
 export default withConnect(Dashboard);
 

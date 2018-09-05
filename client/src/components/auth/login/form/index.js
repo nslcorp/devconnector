@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import InputFiledGroup from '../../../../shared/input-field-group';
+import {InputFieldGroup} from '../../../../shared/form-fields/';
 
 
 const RegisterForm = (props) => {
@@ -13,7 +13,7 @@ const RegisterForm = (props) => {
         name="email"
         type="email"
         placeholder="Email Address"
-        component={InputFiledGroup}
+        component={InputFieldGroup}
         required
       />
       <Field
@@ -21,7 +21,7 @@ const RegisterForm = (props) => {
         name="password"
         type="password"
         placeholder="Password"
-        component={InputFiledGroup}
+        component={InputFieldGroup}
         required
       />
       {error && <strong>{error}</strong>}
