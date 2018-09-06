@@ -1,33 +1,27 @@
 import * as types from './types';
 
 const initialState = {
-  profile: null,
-  profiles: null,
+  entities: [],
   isLoading: false
 };
 
 export default (state = initialState, action) => {
   const { type, payload } = action;
-
   switch (type) {
-    case types.GET_PROFILE_REQUEST:
+    case types.GET_PROFILES_REQUEST:
       return {
         ...state,
         isLoading: true
       };
-    case types.GET_PROFILE_SUCCESS:
+    case types.GET_PROFILES_SUCCESS:
       return {
-        ...state,
+        entities: payload,
         isLoading: false,
-        profile: payload
       };
-
     default:
       return state;
-
   }
 }
 
-export const getDashboard = state => state.dashboard;
-export const getProfile = state => getDashboard(state).profile;
-export const getIsLoading = state => getDashboard(state).isLoading;
+export const getProfiles = state => state.profiles.entities;
+export const getIsLoading = state => state.profiles.isLoading;

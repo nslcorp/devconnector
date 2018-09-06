@@ -7,7 +7,7 @@ const profileController = require('../controllers').profileController;
 router.get('/', passport.authenticate('jwt', { session: false }), profileController.getProfile);
 router.get('/handle/:handle', profileController.getProfileByHandle);
 router.get('/user/:user_id', profileController.getProfileByUserId);
-router.get('/all/', profileController.getAllProfiles);
+router.get('/all', profileController.getAllProfiles);
 
 router.post('/', passport.authenticate('jwt', { session: false }), profileController.createProfile);
 router.post('/education', passport.authenticate('jwt', { session: false }), profileController.addEducation);

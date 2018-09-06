@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-const SelectFieldGroup = ({ name, value, error, info, onChange, options }) => {
+const SelectFieldGroup = ({ input, info, options, meta: { touched, error } }) => {
   const selectOptions = options.map(option => (
     <option key={option.label} value={option.value}>
       {option.label}
@@ -15,7 +15,7 @@ const SelectFieldGroup = ({ name, value, error, info, onChange, options }) => {
 
   return (
     <div className="form-group">
-      <select className={rootClassList} name={name}>
+      <select {...input} className={rootClassList} >
         {selectOptions}
       </select>
       {info && <small className="form-text text-muted">{info}</small>}
@@ -25,10 +25,10 @@ const SelectFieldGroup = ({ name, value, error, info, onChange, options }) => {
 };
 
 SelectFieldGroup.propTypes = {
-  name: PropTypes.string.isRequired,
+  input: PropTypes.shape().isRequired,
   info: PropTypes.string,
-  error: PropTypes.string,
-  options: PropTypes.array.isRequired
+  options: PropTypes.array.isRequired,
+  meta: PropTypes.shape().isRequired,
 };
 
 export default SelectFieldGroup;
