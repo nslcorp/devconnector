@@ -1,10 +1,15 @@
-import { CREATE_PROFILE_REQUEST, GET_PROFILE_REQUEST } from './types';
+import * as types from './types';
 
 export const doGetProfile = () => ({
-  type: GET_PROFILE_REQUEST
+  type: types.GET_PROFILE_REQUEST
 });
 
 export const doCreateProfile = (data, history) => ({
-  type: CREATE_PROFILE_REQUEST,
-  payload: {data, history}
-})
+  type: types.CREATE_PROFILE_REQUEST,
+  payload: { data, history }
+});
+export const doAddEducation = (data, history) => ({
+  type: types.ADD_EDUCATION_REQUEST,
+  payload: { data, history }
+});
+

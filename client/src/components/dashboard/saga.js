@@ -1,4 +1,4 @@
-import { all, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { all, put, takeEvery, takeLatest, call } from 'redux-saga/effects';
 import * as types from './types';
 import { api } from '../../api';
 import { stopSubmit } from 'redux-form';
@@ -16,10 +16,10 @@ const getProfileSaga = function* () {
 };
 
 const createProfileSaga = function* (action) {
-
   try {
     const profile = yield api.post('/api/profile', action.payload.data);
     yield put({ type: types.CREATE_PROFILE_SUCCESS, payload: profile });
+    yield call(action.payload.history.push, '/dashboard');
   }
   catch (error) {
     yield put(stopSubmit('create-profile', error));
@@ -27,11 +27,23 @@ const createProfileSaga = function* (action) {
   }
 };
 
+const addEducationSaga = function* (action) {
+  try {
+    yield api.post('/api/profile/education', action.payload.data);
+    yield call(action.payload.history.push, '/dashboard');
+  }
+  catch (error) {
+    yield put(stopSubmit('add-education', error));
+    yield put({ type: types.ADD_EDUCATION_ERROR, payload: error });
+  }
+};
+
 
 export const saga = function* () {
   yield all([
     takeEvery(types.GET_PROFILE_REQUEST, getProfileSaga),
-    takeLatest(types.CREATE_PROFILE_REQUEST, createProfileSaga)
+    takeLatest(types.CREATE_PROFILE_REQUEST, createProfileSaga),
+    takeLatest(types.ADD_EDUCATION_REQUEST, addEducationSaga),
   ]);
 
 };
