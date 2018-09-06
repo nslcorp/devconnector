@@ -18,7 +18,7 @@ const InputFieldGroup = ({ input, info, placeholder, type, meta: { touched, erro
 InputFieldGroup.propTypes = {
   input: PropTypes.shape().isRequired,
   meta: PropTypes.shape().isRequired,
-  placeholder: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   info: PropTypes.string,
   type: PropTypes.string
 };

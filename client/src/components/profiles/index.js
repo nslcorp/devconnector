@@ -6,23 +6,28 @@ import { doGetProfiles } from './actions';
 // import { isEmpty } from '../../utils';
 import * as selectors from './reducer';
 import Spinner from '../../shared/spinner';
+import Profile from './profile';
 
 
 class ProfilesContainer extends Component {
-  componentDidMount(){
-    this.props.doGetProfiles()
+  componentDidMount() {
+    this.props.doGetProfiles();
   }
-    render(){
-      // const isEmptyProfiles = isEmpty(this.props.profiles);
-      if (this.props.loading) return <Spinner />;
+
+  render() {
+    // const isEmptyProfiles = isEmpty(this.props.profiles);
+    if (this.props.loading) return <Spinner />;
 
 
-      return (
-        <div>
-          <h1>Developer Profiles</h1>
-        </div>
-      );
-    }
+    return (
+      <div>
+        <h1>Developer Profiles</h1>
+        {
+          this.props.profiles.map(profile => <Profile key={profile._id} {...profile}/>)
+        }
+      </div>
+    );
+  }
 }
 
 ProfilesContainer.propTypes = {
@@ -35,5 +40,5 @@ const mapStateToProps = state => ({
   profiles: selectors.getProfiles(state),
   loading: selectors.getIsLoading(state)
 });
-const withConnect = connect(mapStateToProps, {doGetProfiles});
+const withConnect = connect(mapStateToProps, { doGetProfiles });
 export default withConnect(ProfilesContainer);

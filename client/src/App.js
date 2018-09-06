@@ -18,6 +18,7 @@ import Login from './components/auth/login';
 import Dashboard from './components/dashboard';
 import CreateProfile from './components/dashboard/create-profile';
 import Profiles from './components/profiles';
+import AddEducation from './components/dashboard/add-education';
 
 
 const token = localStorage.jwtToken;
@@ -46,6 +47,7 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/dashboard" component={Dashboard} />
               <Route exact path="/create-profile" component={CreateProfile} />
+              <Route exact path="/add-education" component={AddEducation} />
               <Route exact path="/profiles" component={Profiles} />
             </div>
             <Footer />
